@@ -1,4 +1,5 @@
-from ui import render_page
+import ui
 
-if __name__ == "__main__":
-    render_page()
+print("UI imported successfully")
+
+ui.render_page()

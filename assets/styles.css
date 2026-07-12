@@ -1,0 +1,197 @@
+/* ---------- GOOGLE FONT ---------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap');
+
+*{
+    font-family:'Inter',sans-serif;
+}
+
+/* ---------- Hide Streamlit ---------- */
+
+#MainMenu{
+    visibility:hidden;
+}
+
+footer{
+    visibility:hidden;
+}
+
+header{
+    visibility:hidden;
+}
+
+/* ---------- Page ---------- */
+
+.main .block-container{
+
+    max-width:1450px;
+
+    padding-top:2rem;
+
+    padding-bottom:2rem;
+
+}
+
+/* ---------- HERO ---------- */
+
+.hero{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.hero-title{
+
+    font-size:72px;
+
+    font-weight:800;
+
+    background:linear-gradient(90deg,#2563EB,#3B82F6);
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    margin-bottom:8px;
+
+}
+
+.hero-subtitle{
+
+    font-size:25px;
+
+    color:#555;
+
+    margin-bottom:15px;
+
+}
+
+.hero-description{
+
+    width:70%;
+
+    margin:auto;
+
+    color:#666;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+}
+
+/* ---------- Cards ---------- */
+
+.feature-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    min-height:330px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.feature-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.feature-card h3{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.feature-card li{
+
+    margin-bottom:15px;
+
+}
+
+/* ---------- Upload ---------- */
+
+.upload-card{
+
+    background:#F8FAFC;
+
+    border:3px dashed #3B82F6;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    padding:40px;
+
+    margin-bottom:20px;
+
+}
+
+.upload-card h2{
+
+    margin-bottom:20px;
+
+}
+
+.upload-card p{
+
+    color:#666;
+
+    font-size:18px;
+
+}
+
+/* ---------- Streamlit uploader ---------- */
+
+.stFileUploader{
+
+    border-radius:18px;
+
+    background:white;
+
+    padding:12px;
+
+}
+
+/* ---------- About ---------- */
+
+.about-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.07);
+
+    line-height:1.8;
+
+    font-size:17px;
+
+}
+
+/* ---------- Footer ---------- */
+
+.footer{
+
+    text-align:center;
+
+    color:#888;
+
+    margin-top:50px;
+
+    font-size:15px;
+
+}
