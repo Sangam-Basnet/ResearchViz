@@ -249,3 +249,12 @@ def render_page():
     st.write("")
 
     footer()
+
+from file_handler import load_csv
+
+if uploaded_file is not None:
+    try:
+        df = load_csv(uploaded_file)
+        st.success("Dataset loaded successfully.")
+    except ValueError as e:
+        st.error(str(e))
