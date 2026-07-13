@@ -1,5 +1,10 @@
 from pathlib import Path
+import traceback
 import streamlit as st
+
+from file_handler import load_csv
+from cleaner import clean_dataframe
+from analyzer import analyze_dataframe
 
 
 # -----------------------------
@@ -244,17 +249,55 @@ def render_page():
     st.write("")
 
     status_section(uploaded_file)
+    if uploaded_file is not None:
+
+        try:
+
+            # Read CSV
+            df = load_csv(uploaded_file)
+
+            # Clean Dataset
+            clean_df, cleaning_summary = clean_dataframe(df)
+
+            # Analyze Dataset
+            analysis = analyze_dataframe(clean_df)
+
+            st.success("Dataset processed successfully!")
+
+            st.subheader("Dataset Overview")
+
+            col1, col2, col3 = st.columns(3)
+
+            col1.metric(
+                "Rows",
+                analysis["shape"]["rows"],
+            )
+
+            col2.metric(
+                "Columns",
+                analysis["shape"]["columns"],
+            )
+
+            col3.metric(
+                "Memory (MB)",
+                analysis["memory_mb"],
+            )
+
+            st.subheader("Cleaning Summary")
+            st.json(cleaning_summary)
+
+            st.subheader("Missing Values")
+            st.json(analysis["missing"])
+
+            st.subheader("Data Types")
+            st.json(analysis["dtypes"])
+
+        import traceback
+
+        except Exception:
+            st.code(traceback.format_exc())
 
     st.write("")
     st.write("")
 
     footer()
-
-from file_handler import load_csv
-
-if uploaded_file is not None:
-    try:
-        df = load_csv(uploaded_file)
-        st.success("Dataset loaded successfully.")
-    except ValueError as e:
-        st.error(str(e))

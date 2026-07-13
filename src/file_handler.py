@@ -3,7 +3,7 @@ file_handler.py
 
 Responsible for:
 1. Validating uploaded files
-2. Detecting CSV delimeter
+2. Detecting CSV delimiter
 3. Reading CSV safely
 4. Validating the loaded DataFrame
 
@@ -26,14 +26,14 @@ def validate_extension(filename: str) -> bool:
     return any(filename.endswith(ext) for ext in ALLOWED_EXTENSIONS)
 
 
-def detect_delimeter(sample: str) -> str:
+def detect_delimiter(sample: str) -> str:
     """
-    Detect the delimeter used in a csv file.
+    Detect the delimiter used in a csv file.
     """
 
     try: 
         dialect = csv.Sniffer().sniff(sample)
-        return dialect.delimeter
+        return dialect.delimiter
     
     except csv.Error:
         return ","
@@ -90,13 +90,14 @@ def load_csv(uploaded_file) -> pd.DataFrame:
         
     sample = text[:2048]
 
-    delimeter = detect_delimeter(sample)
+    delimiter
+    = detect_delimiter(sample)
 
     try:
 
         df = pd.read_csv(
             StringIO(text),
-            delimeter=delimeter,
+            delimiter = delimiter,
         )
 
     except Exception as e:
