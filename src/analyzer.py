@@ -20,10 +20,27 @@ def dataset_shape(df: pd.DataFrame) -> dict:
     }
 
 
-def memory_usage(df: pd,DataFrame) -> float:
-    """ Return memory usage in MB."""
-    memory = df.memory_usage(deep=True).sum()
-    return round(memory / (1024**1024), 2)
+# def memory_usage(df: pd.DataFrame) -> float:
+#     """ Return memory usage in MB."""
+#     memory = df.memory_usage(deep=True).sum()
+#     return round(memory / (1024**1024), 2)
+
+def memory_usage(df: pd.DataFrame) -> float:
+    """Return memory usage in MB."""
+
+    print("========== MEMORY DEBUG ==========")
+    print("TYPE:", type(df))
+    print("SHAPE:", df.shape)
+
+    memory = df.memory_usage(index=True, deep=True)
+
+    print(memory)
+
+    total = int(memory.sum())
+
+    print("TOTAL:", total)
+
+    return round(total / (1024 * 1024), 2)
 
 
 def column_names(df: pd.DataFrame) -> list:
@@ -51,9 +68,15 @@ def numeric_summary(df: pd.DataFrame) -> pd.DataFrame:
     return df.describe().T
 
 
-def categorical_summary(df: pd.DataFrame) -> pd.DataFrame:
-    """ Summary statistics for categorical columns."""
-    return df.describe(include="object").T
+def categorical_summary(df: pd.DataFrame):
+    """Return summary statistics for categorical columns."""
+
+    categorical = df.select_dtypes(include=["object", "category"])
+
+    if categorical.empty:
+        return None
+
+    return categorical.describe().T
 
 
 def correlation_matrix(df: pd.DataFrame) -> pd.DataFrame:
@@ -67,9 +90,12 @@ def correlation_matrix(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def analyze_dataframe(df: pd.DataFrame) -> dict:
-    """ Execute complete analysis pipeline."""
+    """Execute complete analysis pipeline."""
 
-    return{
+    corr = correlation_matrix(df)
+    cat = categorical_summary(df)
+
+    return {
         "shape": dataset_shape(df),
         "memory_usage_MB": memory_usage(df),
         "column_names": column_names(df),
@@ -77,6 +103,10 @@ def analyze_dataframe(df: pd.DataFrame) -> dict:
         "missing_values": missing_values(df),
         "duplicate_rows": duplicate_rows(df),
         "numeric_summary": numeric_summary(df).to_dict(),
-        "categorical_summary": categorical_summary(df).to_dict(),
-        "correlation_matrix": correlation_matrix(df).to_dict() if correlation_matrix(df) is not None else None,
+        "categorical_summary": (
+        cat.to_dict() if cat is not None else None
+        ),
+        "correlation_matrix": (
+            corr.to_dict() if corr is not None else None
+        ),
     }

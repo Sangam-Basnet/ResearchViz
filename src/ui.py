@@ -1,6 +1,7 @@
 from pathlib import Path
 import traceback
 import streamlit as st
+import pandas as pd
 
 from file_handler import load_csv
 from cleaner import clean_dataframe
@@ -135,7 +136,7 @@ Browse from your computer
     )
 
     uploaded_file = st.file_uploader(
-        "",
+        "Upload CSV",
         type=["csv"],
         label_visibility="collapsed",
     )
@@ -260,6 +261,14 @@ def render_page():
             clean_df, cleaning_summary = clean_dataframe(df)
 
             # Analyze Dataset
+            st.write("=== DEBUG ===")
+
+            st.text(f"Type: {type(clean_df)}")
+            st.text(f"Is DataFrame: {isinstance(clean_df, pd.DataFrame)}")
+            st.text(f"Shape: {clean_df.shape}")
+
+            st.write("Preview:")
+            st.dataframe(clean_df.head())
             analysis = analyze_dataframe(clean_df)
 
             st.success("Dataset processed successfully!")
@@ -280,19 +289,17 @@ def render_page():
 
             col3.metric(
                 "Memory (MB)",
-                analysis["memory_mb"],
+                analysis["memory_usage_MB"],
             )
 
             st.subheader("Cleaning Summary")
             st.json(cleaning_summary)
 
             st.subheader("Missing Values")
-            st.json(analysis["missing"])
+            st.json(analysis["missing_values"])
 
             st.subheader("Data Types")
-            st.json(analysis["dtypes"])
-
-        import traceback
+            st.json(analysis["data_types"])
 
         except Exception:
             st.code(traceback.format_exc())

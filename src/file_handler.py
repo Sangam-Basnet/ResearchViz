@@ -90,8 +90,7 @@ def load_csv(uploaded_file) -> pd.DataFrame:
         
     sample = text[:2048]
 
-    delimiter
-    = detect_delimiter(sample)
+    delimiter=detect_delimiter(sample)
 
     try:
 
