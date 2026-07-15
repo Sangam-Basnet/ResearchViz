@@ -97,14 +97,14 @@ def create_histograms(df: pd.DataFrame):
     
     num_cols = len(numeric_df.columns)
 
-    fig, axes = plt.subplots(
+    fig, ax = plt.subplots(
         num_cols,
         1,
-        figsize=(8, 4 * num-cols),
+        figsize=(8, 4 * num_cols),
     )
 
     if num_cols == 1:
-        axes = [axes]
+        ax = [ax]
 
     for ax, column in zip(
         ax,

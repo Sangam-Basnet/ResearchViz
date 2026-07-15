@@ -6,6 +6,7 @@ import pandas as pd
 from file_handler import load_csv
 from cleaner import clean_dataframe
 from analyzer import analyze_dataframe
+from visualizer import generate_visualizations
 
 
 # -----------------------------
@@ -261,15 +262,10 @@ def render_page():
             clean_df, cleaning_summary = clean_dataframe(df)
 
             # Analyze Dataset
-            st.write("=== DEBUG ===")
-
-            st.text(f"Type: {type(clean_df)}")
-            st.text(f"Is DataFrame: {isinstance(clean_df, pd.DataFrame)}")
-            st.text(f"Shape: {clean_df.shape}")
-
-            st.write("Preview:")
-            st.dataframe(clean_df.head())
             analysis = analyze_dataframe(clean_df)
+
+            # visualize dataset
+            figures = generate_visualizations(clean_df)
 
             st.success("Dataset processed successfully!")
 
@@ -300,6 +296,22 @@ def render_page():
 
             st.subheader("Data Types")
             st.json(analysis["data_types"])
+
+            # ---------------
+            # visualizations
+            # ----------------
+            st.subheader("Visualizations")
+
+            for title, figure in figures.items():
+
+                if figure is not None:
+
+                    st.markdown(f"### {title}")
+
+                    st.pyplot(figure)
+                
+                else:
+                    st.info(f"{title}: Not available for this dataset.")
 
         except Exception:
             st.code(traceback.format_exc())
