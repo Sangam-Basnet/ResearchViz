@@ -7,6 +7,7 @@ from file_handler import load_csv
 from cleaner import clean_dataframe
 from analyzer import analyze_dataframe
 from visualizer import generate_visualizations
+from report_generator import generate_full_report
 
 
 # -----------------------------
@@ -267,6 +268,12 @@ def render_page():
             # visualize dataset
             figures = generate_visualizations(clean_df)
 
+            # report generation
+            report = generate_full_report(
+                cleaning_summary,
+                analysis,
+            )
+
             st.success("Dataset processed successfully!")
 
             st.subheader("Dataset Overview")
@@ -288,30 +295,21 @@ def render_page():
                 analysis["memory_usage_MB"],
             )
 
-            st.subheader("Cleaning Summary")
-            st.json(cleaning_summary)
+            # show the report
+            st.subheader("Research Report")
 
-            st.subheader("Missing Values")
-            st.json(analysis["missing_values"])
-
-            st.subheader("Data Types")
-            st.json(analysis["data_types"])
-
-            # ---------------
-            # visualizations
-            # ----------------
-            st.subheader("Visualizations")
-
-            for title, figure in figures.items():
-
-                if figure is not None:
-
-                    st.markdown(f"### {title}")
-
-                    st.pyplot(figure)
-                
-                else:
-                    st.info(f"{title}: Not available for this dataset.")
+            # variable to store csv
+            csv_data = clean_df.to_csv(
+                index=False
+            )
+            
+            # creating a download button
+            st.download_button(
+                label="📥 Download Cleaned Dataset (CSV)",
+                data=csv_data,
+                file_name="cleaned_dataset.csv",
+                mime="text/csv",
+            )
 
         except Exception:
             st.code(traceback.format_exc())
