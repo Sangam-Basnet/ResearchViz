@@ -86,7 +86,7 @@ Download Report
 Clone the repository.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ResearchViz.git
+git clone https://github.com/Sangam-Basnet/ResearchViz.git
 ```
 
 Move into the project directory.
