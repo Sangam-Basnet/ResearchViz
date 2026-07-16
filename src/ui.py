@@ -8,6 +8,8 @@ from cleaner import clean_dataframe
 from analyzer import analyze_dataframe
 from visualizer import generate_visualizations
 from report_generator import generate_full_report
+from pdf_generator import generate_pdf
+from visualizer import generate_visualizations
 
 
 # -----------------------------
@@ -265,14 +267,21 @@ def render_page():
             # Analyze Dataset
             analysis = analyze_dataframe(clean_df)
 
-            # visualize dataset
-            figures = generate_visualizations(clean_df)
-
             # report generation
             report = generate_full_report(
                 cleaning_summary,
                 analysis,
             )
+
+            # visualize dataset
+            figures = generate_visualizations(
+                clean_df,
+            )
+
+            pdf = generate_pdf(
+                report,
+                figures,
+            )            
 
             st.success("Dataset processed successfully!")
 
@@ -309,6 +318,13 @@ def render_page():
                 data=csv_data,
                 file_name="cleaned_dataset.csv",
                 mime="text/csv",
+            )
+
+            st.download_button(
+                label=" 📄Download PDF Report",
+                data=pdf,
+                file_name="ResearchViz_Report.pdf",
+                mime="application/pdf",
             )
 
         except Exception:

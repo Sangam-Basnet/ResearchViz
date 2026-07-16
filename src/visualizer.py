@@ -95,36 +95,26 @@ def create_histograms(df: pd.DataFrame):
     if numeric_df.empty:
         return None
     
-    num_cols = len(numeric_df.columns)
+    figures = []
 
-    fig, ax = plt.subplots(
-        num_cols,
-        1,
-        figsize=(8, 4 * num_cols),
-    )
+    for column in numeric_df.columns:
 
-    if num_cols == 1:
-        ax = [ax]
+        fig, ax = plt.subplots(figsize=(8,5))
 
-    for ax, column in zip(
-        ax,
-        numeric_df.columns,
-    ):
         ax.hist(
             numeric_df[column],
-            bins = 20,
+            bins=20,
         )
 
-        ax.set_title(
-            f"{column} Distribution"
-        )
-
+        ax.set_title(f"{column} Distribution")
         ax.set_xlabel(column)
         ax.set_ylabel("Frequency")
 
-    plt.tight_layout()
+        plt.tight_layout()
 
-    return fig
+        figures.append(fig)
+
+    return figures
 
 def create_boxplots(df: pd.DataFrame):
     """
@@ -173,48 +163,33 @@ def create_barcharts(df: pd.DataFrame):
     if categorical_df.empty:
         return None
     
-    num_cols = len(categorical_df.columns)
+    figures = []
 
-    fig, axes = plt.subplots(
-        num_cols,
-        1,
-        figsize=(8, 4*num_cols),
-    )
+    for column in categorical_df.columns:
 
-    if num_cols == 1:
-        axes = [axes]
+        counts = categorical_df[column].value_counts()
 
-    for ax, column in zip(
-        axes,
-        categorical_df.columns,
-    ):
-        
-        counts = (
-            categorical_df[column].value_counts()
-        )
+        fig, ax = plt.subplots(figsize=(8,5))
 
         ax.bar(
             counts.index.astype(str),
             counts.values,
         )
 
-        ax.set_title(
-            f"{column} counts"
-        )
-
+        ax.set_title(f"{column} Counts")
         ax.set_xlabel(column)
         ax.set_ylabel("Frequency")
 
-        plt.setp(
-            ax.get_xticklabels(),
+        plt.xticks(
             rotation=45,
             ha="right",
         )
 
-    plt.tight_layout()
+        plt.tight_layout()
 
-    return fig
+        figures.append(fig)
 
+    return figures
 
 def generate_visualizations(df: pd.DataFrame) -> dict:
     """
